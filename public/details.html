@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détails de l'événement</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <script>
+        tailwind.config = { theme: { extend: { colors: { dark: '#0f0c29', aubergine: '#302b63' } } } }
+    </script>
+    <style>
+        body { background: #0f0c29; color: white; }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+    <a href="index.html" class="fixed top-6 left-6 z-50 flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full hover:bg-white/20 transition-all text-sm font-bold border border-white/10">
+        <i class="ph ph-arrow-left"></i> Retour au Dashboard
+    </a>
+
+    <div id="detail-container" class="w-full max-w-4xl bg-[#1a1638]/80 backdrop-blur-xl border border-white/10 rounded-3xl overflow-hidden shadow-2xl relative">
+        <div class="p-20 text-center text-purple-400">Chargement...</div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const eventId = urlParams.get('id');
+
+        async function loadDetails() {
+            try {
+                const response = await fetch(`/events/${eventId}`);
+                if (!response.ok) throw new Error('Event not found');
+                const event = await response.json();
+
+                const bgImage = `https://picsum.photos/seed/${event.id}/800/300`;
+
+                document.getElementById('detail-container').innerHTML = `
+                    <div class="h-64 w-full bg-cover bg-center relative" style="background-image: url('${bgImage}');">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#1a1638] to-transparent"></div>
+                        <div class="absolute bottom-6 left-8">
+                             <span class="bg-purple-600 text-xs font-bold px-3 py-1 rounded-full text-white mb-2 inline-block">
+                                ${new Date(event.date).toLocaleDateString('fr-FR')}
+                            </span>
+                            <h1 class="text-4xl font-bold text-white shadow-black drop-shadow-lg">${event.title}</h1>
+                        </div>
+                    </div>
+                    
+                    <div class="p-8 flex flex-col md:flex-row gap-8">
+                        <div class="flex-1">
+                            <h2 class="text-xl font-bold text-purple-300 mb-4 flex items-center gap-2">
+                                <i class="ph ph-info"></i> Description
+                            </h2>
+                            <p class="text-gray-300 leading-relaxed text-lg">${event.description}</p>
+                            
+                            <div class="mt-8 flex items-center gap-4 text-gray-400 bg-white/5 p-4 rounded-xl border border-white/5">
+                                <i class="ph ph-map-pin text-2xl text-pink-500"></i>
+                                <div>
+                                    <p class="text-xs uppercase font-bold tracking-wider">Lieu</p>
+                                    <p class="text-white font-medium">${event.location}</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="w-full md:w-72 bg-white/5 rounded-2xl p-6 border border-white/10 h-fit">
+                            <div class="text-center mb-6">
+                                <p class="text-gray-400 text-sm mb-1">Votes de la communauté</p>
+                                <p class="text-5xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">${event.votes}</p>
+                            </div>
+                            <button class="w-full bg-white/10 hover:bg-white/20 text-white font-bold py-3 rounded-xl mb-3 transition-all border border-white/10">
+                                <i class="ph ph-share-network"></i> Partager
+                            </button>
+                            <button class="w-full bg-gradient-to-r from-purple-600 to-pink-600 hover:opacity-90 text-white font-bold py-3 rounded-xl shadow-lg shadow-purple-900/50 transition-all">
+                                <i class="ph ph-ticket"></i> Je participe
+                            </button>
+                        </div>
+                    </div>
+                `;
+            } catch (error) {
+                document.getElementById('detail-container').innerHTML = `<div class="p-10 text-center text-red-400">Événement introuvable.</div>`;
+            }
+        }
+        if(eventId) loadDetails();
+    </script>
+</body>
+</html>
