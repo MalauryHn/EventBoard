@@ -1,4 +1,4 @@
-# 🍆 EventBoard - Plateforme d'Événements Collaboratifs
+# EventBoard - Plateforme d'Événements Collaboratifs
 
 EventBoard est une application web moderne permettant de consulter, créer et voter pour des événements locaux.
 
