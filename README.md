@@ -56,6 +56,8 @@ Suivez ces étapes pour lancer le projet sur votre machine locale :
     Ouvrez votre navigateur et allez à l'adresse :
     👉 `http://localhost:3000`
 
+[https://github.com/MalauryHn/EventBoard/blob/main/2026-03-06-14-13-01.mp4](https://github.com/MalauryHn/EventBoard/blob/main/2026-03-06-14-13-01.mp4)
+
 ## 📂 Structure du Projet
 
 ```text
